@@ -29,13 +29,15 @@ RUN \
       groupadd --gid "${USER_GID}" "${USER_NAME}" \
       && useradd --uid "${USER_UID}" --gid "${USER_GID}" --shell /bin/bash --create-home "${USER_NAME}"
 
+ENV OPENCODE_INSTALL_DIR=/usr/local/bin
+
+RUN \
+      curl -fsSL https://opencode.ai/install | bash
+
 HEALTHCHECK NONE
 
 USER ${USER_NAME}
 WORKDIR /workspace
-
-RUN \
-      curl -fsSL https://opencode.ai/install | bash
 
 RUN \
       echo '.DS_Store' > "${HOME}/.gitignore" \
@@ -50,6 +52,4 @@ RUN \
       && git config --global user.name "${USER_NAME}" \
       && git config --global user.email "${USER_NAME}@localhost"
 
-ENV PATH="/home/${USER_NAME}/.opencode/bin:${PATH}"
-
-ENTRYPOINT ["opencode"]
+ENTRYPOINT ["/usr/local/bin/opencode"]

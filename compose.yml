@@ -23,6 +23,11 @@ services:
     volumes:
       - ${PWD}:/workspace
       - ${HOME}/.gitconfig:/home/cli/.gitconfig
+      - opencode_data:/home/cli/.opencode
     working_dir: /workspace
     entrypoint:
-      - opencode
+      - /usr/local/bin/opencode
+volumes:
+  opencode_data:
+    name: opencode_data
+    driver: local
